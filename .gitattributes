@@ -1,0 +1,13 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Windows scripts and task definitions must maintain CRLF
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.xml text eol=crlf
+
+# Shell scripts and documentation use standard LF
+*.sh text eol=lf
+*.md text eol=lf
+*.json text eol=lf

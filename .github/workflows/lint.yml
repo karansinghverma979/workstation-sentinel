@@ -1,0 +1,35 @@
+name: Lint & Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run PowerShell Script Analyzer
+        shell: pwsh
+        run: |
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Error
+          if ($results) {
+            $results | Format-Table -AutoSize
+            exit 1
+          } else {
+            Write-Host "PSScriptAnalyzer passed with zero errors."
+          }
+
+      - name: Validate XML Syntax
+        shell: pwsh
+        run: |
+          [xml]$xml = Get-Content .\register_task.xml
+          Write-Host "Task XML parsed successfully. Root element: $($xml.DocumentElement.Name)"

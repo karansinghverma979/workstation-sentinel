@@ -1,0 +1,17 @@
+# Runtime logs & state
+*.log
+sentinel.log
+
+# Windows thumbnail & desktop caches
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# PowerShell temporary artifacts
+*.ps1xml
+*~
+*.bak
+
+# OS metadata
+.DS_Store
