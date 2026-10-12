@@ -12,7 +12,7 @@
   </Triggers>
   <Principals>
     <Principal id="Author">
-      <UserId>NT AUTHORITY\SYSTEM</UserId>
+      <UserId>S-1-5-18</UserId>
       <RunLevel>HighestAvailable</RunLevel>
     </Principal>
   </Principals>
