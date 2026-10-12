@@ -2,9 +2,9 @@
 
 > **Zero-overhead, event-driven Windows sentinel that automatically powers off unattended workstations after 30 minutes of lock inactivity.**
 
-[![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6?logo=windows)](https://github.com/karansinghverma/workstation-sentinel)
-[![Shell: PowerShell](https://img.shields.io/badge/Shell-PowerShell-5391FE?logo=powershell)](https://github.com/karansinghverma/workstation-sentinel)
-[![Overhead: 0% CPU](https://img.shields.io/badge/Idle%20Overhead-0%25%20CPU-success)](https://github.com/karansinghverma/workstation-sentinel)
+[![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6?logo=windows)](https://github.com/karansinghverma979/workstation-sentinel)
+[![Shell: PowerShell](https://img.shields.io/badge/Shell-PowerShell-5391FE?logo=powershell)](https://github.com/karansinghverma979/workstation-sentinel)
+[![Overhead: 0% CPU](https://img.shields.io/badge/Idle%20Overhead-0%25%20CPU-success)](https://github.com/karansinghverma979/workstation-sentinel)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Architecture Docs](https://img.shields.io/badge/Docs-Architecture-blue)](docs/architecture.md)
 
@@ -50,7 +50,7 @@ flowchart TD
 Clone the repository and run the installer from PowerShell:
 
 ```powershell
-git clone https://github.com/karansinghverma/workstation-sentinel.git
+git clone https://github.com/karansinghverma979/workstation-sentinel.git
 cd workstation-sentinel
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
