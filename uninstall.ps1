@@ -15,11 +15,10 @@ if (-not $isAdmin) {
 }
 
 Write-Host "Removing $taskName from Windows Task Scheduler..." -ForegroundColor Cyan
-$result = & schtasks.exe /delete /tn $taskName /f
-
-if ($LASTEXITCODE -eq 0) {
+try {
+    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction Stop
     Write-Host "`n[SUCCESS] $taskName has been removed from your system." -ForegroundColor Green
-} else {
+} catch {
     Write-Host "`n[NOTICE] Task was not found or already removed." -ForegroundColor Yellow
 }
 

@@ -16,25 +16,22 @@ if (-not $isAdmin) {
     exit
 }
 
-# Dynamically resolve and inject script path via temporary XML without mutating git files
+# Dynamically resolve and inject script path
 $sentinelScriptPath = Join-Path $scriptDir "sentinel.ps1"
 $xmlContent = Get-Content -Path $xmlPath -Raw
+# Strip <?xml ...?> declaration header to prevent in-memory MSXML encoding conflict
+$xmlContent = $xmlContent -replace '<\?xml.*?\?>\s*', ''
 $resolvedXml = $xmlContent -replace 'File "[^"]*sentinel\.ps1"', "File `"$sentinelScriptPath`""
 
-$tempXml = [System.IO.Path]::GetTempFileName()
-Set-Content -Path $tempXml -Value $resolvedXml -Encoding UTF8
-
 Write-Host "Registering $taskName in Windows Task Scheduler..." -ForegroundColor Cyan
-$result = & schtasks.exe /create /tn $taskName /xml $tempXml /f
-Remove-Item -Path $tempXml -Force -ErrorAction SilentlyContinue
-
-if ($LASTEXITCODE -eq 0) {
+try {
+    $null = Register-ScheduledTask -TaskName $taskName -Xml $resolvedXml -Force -ErrorAction Stop
     Write-Host "`n[SUCCESS] $taskName has been successfully registered!" -ForegroundColor Green
     Write-Host "Trigger: Automatically fires whenever the PC is locked." -ForegroundColor Gray
     Write-Host "Timeout: Shuts down after 30 minutes unattended." -ForegroundColor Gray
     Write-Host "Logs: $scriptDir\sentinel.log" -ForegroundColor Gray
-} else {
-    Write-Host "`n[ERROR] Failed to register task. Exit code: $LASTEXITCODE" -ForegroundColor Red
+} catch {
+    Write-Host "`n[ERROR] Failed to register task: $_" -ForegroundColor Red
 }
 
 Write-Host "`nPress any key to close..."
