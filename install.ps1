@@ -16,14 +16,17 @@ if (-not $isAdmin) {
     exit
 }
 
-# Dynamically resolve and inject script path for portable installation
+# Dynamically resolve and inject script path via temporary XML without mutating git files
 $sentinelScriptPath = Join-Path $scriptDir "sentinel.ps1"
 $xmlContent = Get-Content -Path $xmlPath -Raw
-$updatedXml = $xmlContent -replace 'File "[^"]*sentinel\.ps1"', "File `"$sentinelScriptPath`""
-Set-Content -Path $xmlPath -Value $updatedXml -Encoding Unicode
+$resolvedXml = $xmlContent -replace 'File "[^"]*sentinel\.ps1"', "File `"$sentinelScriptPath`""
+
+$tempXml = [System.IO.Path]::GetTempFileName()
+Set-Content -Path $tempXml -Value $resolvedXml -Encoding UTF8
 
 Write-Host "Registering $taskName in Windows Task Scheduler..." -ForegroundColor Cyan
-$result = & schtasks.exe /create /tn $taskName /xml $xmlPath /f
+$result = & schtasks.exe /create /tn $taskName /xml $tempXml /f
+Remove-Item -Path $tempXml -Force -ErrorAction SilentlyContinue
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`n[SUCCESS] $taskName has been successfully registered!" -ForegroundColor Green
